@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Video Streaming Demonstration</title>
+</head>
+<body>
+    <h1>Raspberry Pi Robot</h1>
+    <script>
+        function buttonDown(direction) {
+            alert("robot should move", direction)
+        }
+    </script>
+    <p>Robot Controls:</p>
+    <button></button>
+    <button></u
+    <p>Live Video Feed:</p>
+    <img src="{{ url_for('video_feed') }}">
+</body>
+</html>
