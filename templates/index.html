@@ -18,9 +18,9 @@
         setInterval(function() {
             document.getElementById("showDivX").innerHTML=joy.GetX(); 
             document.getElementById("showDivY").innerHTML=joy.GetY(); 
-            document.getElementById("angleOfJoystick").innerHTML = Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI;
-            if (joy.GetX() !== 0 && joy.GetY() !== 0) {
-                var direction = [null, null];
+            document.getElementById("angleOfJoystick").innerHTML = round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI;)
+            direction = [null, null];
+            if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 if (0 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <= 180) {
                     direction[0] = "forward"
                 } else {
@@ -33,7 +33,7 @@
                     direction[1] = "right"
                 }
                 console.log(direction)
-                let data = {direction: direction, angle: (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)};
+                let data = {direction: direction, angle: round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)};
 
                 fetch("/move_robot", {
                     method: "POST", 
