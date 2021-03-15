@@ -27,7 +27,7 @@
                     direction[0] = "backward"
                 }
 
-                if (90 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <=270) {
+                if (-90 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <=90) {
                     direction[1] = "left"
                 } else {
                     direction[1] = "right"
