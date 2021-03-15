@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from importlib import import_module
 import os
-from flask import Flask, render_template, Response
+from flask import *
 
 from camera_pi import Camera
 
@@ -27,6 +27,11 @@ def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/move_robot', methods=["POST"])
+def move_robot():
+    print(request.json("direction"))
+    print(request.json("angle"))
 
 
 if __name__ == '__main__':

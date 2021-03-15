@@ -1,10 +1,46 @@
 <html>
   <head>
     <title>RPi Robot</title>
+    <script src="static/joy.min.js"></script>
   </head>
   <body>
+    <h1>Raspberry Pi Robot!</h1>
     <h3>Controls</h3>
+    <div id="joyDiv" style="width:200px; height:200px; margin-bottom:20px;"></div>
+    <p id="showDivX"></p>
+    <p id="showDivY"></p>
+    <p id="angleOfJoystick"></p>
     <h3>Video Stream</h3>
     <img src="{{ url_for('video_feed') }}">
+    <script>
+        // Create JoyStick object into the DIV 'joyDiv'
+        var joy = new JoyStick('joyDiv');
+        setInterval(function() {
+            document.getElementById("showDivX").innerHTML=joy.GetX(); 
+            document.getElementById("showDivY").innerHTML=joy.GetY(); 
+            document.getElementById("angleOfJoystick").innerHTML = Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI;
+            if (joy.GetX() !== 0 && joy.GetY() !== 0) {
+                var direction = [null, null];
+                if (0 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <= 180) {
+                    direction[0] = "forward"
+                } else {
+                    direction[0] = "backward"
+                }
+
+                if (90 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <=270) {
+                    direction[1] = "left"
+                } else {
+                    direction[1] = "right"
+                }
+                console.log(direction)
+                let data = {direction: direction, angle: (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)};
+
+                fetch("/post/data/here", {
+                    method: "POST", 
+                    body: JSON.stringify(data)
+                });
+            }
+        }, 50);
+    </script>
   </body>
 </html>
