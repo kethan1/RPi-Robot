@@ -53,8 +53,8 @@ def move_robot():
         elif -179 <= angle <= -90:
             percent_left = int(round(((abs(angle)-90)/90)*100, 0))
             percent_back = int(round((90-percent_left/90)*100, 0))
-            right_backward.start(percent_back)
-            left_backward.start(percent_left)
+            # right_backward.start(percent_back)
+            # left_backward.start(percent_left)
             print("backward, left", percent_left, percent_back)
         elif -90 < angle <= -1:
             percent_right = 0-(0-angle)
