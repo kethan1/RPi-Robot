@@ -15,11 +15,11 @@
     <script>
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv');
+        direction = [null, null];
         setInterval(function() {
             document.getElementById("showDivX").innerHTML=joy.GetX(); 
             document.getElementById("showDivY").innerHTML=joy.GetY(); 
             document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
-            direction = [null, null];
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 if (0 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <= 180) {
                     direction[0] = "forward"
