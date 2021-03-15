@@ -18,7 +18,7 @@
         setInterval(function() {
             document.getElementById("showDivX").innerHTML=joy.GetX(); 
             document.getElementById("showDivY").innerHTML=joy.GetY(); 
-            document.getElementById("angleOfJoystick").innerHTML = round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI;)
+            document.getElementById("angleOfJoystick").innerHTML = round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
             direction = [null, null];
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 if (0 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <= 180) {
