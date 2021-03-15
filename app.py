@@ -11,26 +11,14 @@ app = Flask(__name__)
 GPIO.setmode(GPIO.BCM)
 pinlist = [26, 19, 13, 6]
 GPIO.setup(pinlist, GPIO.OUT)
-motor1 = GPIO.PWM(26, 50)
-motor2 = GPIO.PWM(19, 50)
-motor3 = GPIO.PWM(13, 50)
-motor4 = GPIO.PWM(6, 50)
 
-motors = [motor1, motor2, motor3, motor4]
+right_forward = GPIO.PWM(6, 50)
+right_backward = GPIO.PWM(26, 50)
+left_backward = GPIO.PWM(19, 50)
+left_forward = GPIO.PWM(13, 50)
+
+motors = [right_forward, right_backward, left_backward, left_forward]
 for motor in motors: motor.stop()
-
-motor1.start(50)
-time.sleep(10)
-motor1.stop()
-motor2.start(50)
-time.sleep(10)
-motor2.stop()
-motor3.start(50)
-time.sleep(10)
-motor3.stop()
-motor4.start(50)
-time.sleep(10)
-motor4.stop()
 
 @app.route('/')
 def index():
@@ -63,8 +51,10 @@ def move_robot():
         elif 90 < angle <= 180:
             print("forward, left")
         elif -179 <= angle <= -90:
-            percent_left = (abs(angle)-90)
-            percent_back = 90-percent_left
+            percent_left = int(round(((abs(angle)-90)/90)*100, 0))
+            percent_back = int(round((90-percent_left/90)*100, 0))
+            right_backward.start(percent_back)
+            left_backward.start(percent_left)
             print("backward, left", percent_left, percent_back)
         elif -90 < angle <= -1:
             percent_right = 0-(0-angle)
