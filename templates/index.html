@@ -15,41 +15,31 @@
     <script>
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv');
-        direction = [null, null];
+        angle = null;
         setInterval(function() {
             document.getElementById("showDivX").innerHTML=joy.GetX(); 
             document.getElementById("showDivY").innerHTML=joy.GetY(); 
             document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
-                if (0 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <= 180) {
-                    direction[0] = "forward"
-                } else {
-                    direction[0] = "backward"
-                }
-
-                if (-90 <= (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) && (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI) <=90) {
-                    direction[1] = "left"
-                } else {
-                    direction[1] = "right"
-                }
-                let data = {direction: direction, angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)};
-
+                angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
                 fetch("/move_robot", {
                     method: "POST", 
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({
+                        angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)
+                    })
                 });
             } else {
-                if (direction[0] !== "still") {
-                    direction[0] = "still"
+                if (angle !== "still") {
+                    angle = "still"
                     fetch("/move_robot", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify({direction: "still"})
+                        body: JSON.stringify({angle: "still"})
                     });
                 }
             }

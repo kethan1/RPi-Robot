@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from importlib import import_module
-import os
 from flask import *
 import RPi.GPIO as GPIO
+import time
+import os
 
 from camera_pi import Camera
 
@@ -11,9 +11,26 @@ app = Flask(__name__)
 GPIO.setmode(GPIO.BCM)
 pinlist = [26, 19, 13, 6]
 GPIO.setup(pinlist, GPIO.OUT)
-GPIO.output(pinlist, GPIO.LOW)
+motor1 = GPIO.PWM(26, 50)
+motor2 = GPIO.PWM(19, 50)
+motor3 = GPIO.PWM(13, 50)
+motor4 = GPIO.PWM(6, 50)
 
-moveInfo = []
+motors = [motor1, motor2, motor3, motor4]
+for motor in motors: motor.stop()
+
+motor1.start(50)
+time.sleep(10)
+motor1.stop()
+motor2.start(50)
+time.sleep(10)
+motor2.stop()
+motor3.start(50)
+time.sleep(10)
+motor3.stop()
+motor4.start(50)
+time.sleep(10)
+motor4.stop()
 
 @app.route('/')
 def index():
@@ -38,12 +55,23 @@ def video_feed():
 @app.route('/move_robot', methods=["POST"])
 def move_robot():
     print(request.json)
-    if request.json["direction"] != "still":
-        moveInfo = [request.json["direction"], request.json["angle"]]
-        print(moveInfo)
+    if request.json["angle"] != "still":
+        angle = request.json["angle"]
+        print(angle)
+        if 0 <= angle <= 90:
+            print("forward, right")
+        elif 90 < angle <= 180:
+            print("forward, left")
+        elif -179 <= angle <= -90:
+            percent_left = (abs(angle)-90)
+            percent_back = 90-percent_left
+            print("backward, left", percent_left, percent_back)
+        elif -90 < angle <= -1:
+            percent_right = 0-(0-angle)
+            percent_back = -90-(-90-angle)
+            print("backward, right", percent_right, percent_back)
     else:
-        moveInfo = ["still"]
-        GPIO.output(pinlist, GPIO.LOW)
+        for motor in motors: motor.stop()
     return "Good"
 
 
