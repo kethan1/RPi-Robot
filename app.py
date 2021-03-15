@@ -38,8 +38,8 @@ def video_feed():
 @app.route('/move_robot', methods=["POST"])
 def move_robot():
     print(request.json)
-    if request.json("direction") != "still":
-        moveInfo = [request.json("direction"), request.json("angle")]
+    if request.json["direction"] != "still":
+        moveInfo = [request.json["direction"], request.json["angle"]]
         print(moveInfo)
     else:
         moveInfo = ["still"]

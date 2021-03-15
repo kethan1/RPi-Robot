@@ -37,13 +37,19 @@
 
                 fetch("/move_robot", {
                     method: "POST", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify(data)
                 });
             } else {
                 if (direction[0] !== "still") {
                     direction[0] = "still"
                     fetch("/move_robot", {
-                        method: "POST", 
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
                         body: JSON.stringify({direction: "still"})
                     });
                 }
