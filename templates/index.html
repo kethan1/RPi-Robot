@@ -41,6 +41,7 @@
                 });
             } else {
                 if (direction[0] !== "still") {
+                    direction[0] = "still"
                     fetch("/move_robot", {
                         method: "POST", 
                         body: JSON.stringify({direction: "still"})
