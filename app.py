@@ -44,6 +44,7 @@ def move_robot():
     else:
         moveInfo = ["still"]
         GPIO.output(pinlist, GPIO.LOW)
+    return ""
 
 
 if __name__ == '__main__':
