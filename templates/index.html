@@ -35,10 +35,17 @@
                 console.log(direction)
                 let data = {direction: direction, angle: (Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)};
 
-                fetch("/post/data/here", {
+                fetch("/move_robot", {
                     method: "POST", 
                     body: JSON.stringify(data)
                 });
+            } else {
+                if (direction[0] !== "still") {
+                    fetch("/move_robot", {
+                        method: "POST", 
+                        body: JSON.stringify({direction: "still"})
+                    });
+                }
             }
         }, 50);
     </script>

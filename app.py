@@ -2,11 +2,18 @@
 from importlib import import_module
 import os
 from flask import *
+import RPi.GPIO as GPIO
 
 from camera_pi import Camera
 
 app = Flask(__name__)
 
+GPIO.setmode(GPIO.BCM)
+pinlist = [26, 19, 13, 6]
+GPIO.setup(pinlist, GPIO.OUT)
+GPIO.output(pinlist, GPIO.LOW)
+
+moveInfo = []
 
 @app.route('/')
 def index():
@@ -31,9 +38,16 @@ def video_feed():
 @app.route('/move_robot', methods=["POST"])
 def move_robot():
     print(request.json)
-    print(request.json("direction"))
-    print(request.json("angle"))
+    if request.json("direction") != "still":
+        moveInfo = [request.json("direction"), request.json("angle")]
+        print(moveInfo)
+    else:
+        moveInfo = ["still"]
+        GPIO.output(pinlist, GPIO.LOW)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', threaded=True)
+    try:
+        app.run(host='0.0.0.0', threaded=True)
+    except KeyboardInterrupt:
+        GPIO.cleanup()
