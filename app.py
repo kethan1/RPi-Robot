@@ -47,6 +47,8 @@ def move_robot():
         angle = request.json["angle"]
         print(angle)
         if 0 <= angle <= 90:
+            percent_right = ((90-angle)/90)*100
+            percent_forward = (angle/90)*100
             print("forward, right")
         elif 90 < angle <= 180:
             print("forward, left")
