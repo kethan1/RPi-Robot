@@ -61,25 +61,15 @@ def move_robot():
     if request.json["angle"] != "still":
         angle = request.json["angle"]
         print(angle)
-        print(throttle_angle_to_thrust(((angle - 180) % 360) + 180))
-        # if 0 <= angle <= 90:
-        #     percent_right = ((90-angle)/90)*100
-        #     percent_forward = (angle/90)*100
-        #     right_forward.start(percent_forward-percent_right)
-        #     left_forward.start(percent_forward)
-        #     print("forward, right", percent_right, percent_forward)
-        # elif 90 < angle <= 180:
-        #     print("forward, left")
-        # elif -179 <= angle <= -90:
-        #     percent_left = int(round(((abs(angle)-90)/90)*100, 0))
-        #     percent_back = int(round((90-percent_left/90)*100, 0))
-        #     # right_backward.start(percent_back)
-        #     # left_backward.start(percent_left)
-        #     print("backward, left", percent_left, percent_back)
-        # elif -90 < angle <= -1:
-        #     percent_right = 0-(0-angle)
-        #     percent_back = -90-(-90-angle)
-        #     print("backward, right", percent_right, percent_back)
+        thrust = throttle_angle_to_thrust(((angle - 180) % 360) + 180)
+        if thrust[0] < 0:
+            left_backward.start(abs(thrust[0]))
+        else:
+            left_forward.start(thrust[0])
+        if thrust[1] < 0:
+            right_backward.start(abs(thrust[1]))
+        else:
+            right_forward.start(thrust[1])
     else:
         for motor in motors: motor.stop()
     return "Good"
