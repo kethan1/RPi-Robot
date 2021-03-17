@@ -61,8 +61,7 @@ def move_robot():
     if request.json["angle"] != "still":
         angle = request.json["angle"]
         print(angle)
-        final_angle = None
-        # throttle_angle_to_thrust(final_angle)
+        print(throttle_angle_to_thrust((angle - 180) % 360) + 180)
         # if 0 <= angle <= 90:
         #     percent_right = ((90-angle)/90)*100
         #     percent_forward = (angle/90)*100
