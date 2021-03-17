@@ -81,6 +81,6 @@ def move_robot():
 
 if __name__ == '__main__':
     try:
-        app.run(host='0.0.0.0', threaded=True)
+        app.run(host='0.0.0.0', threaded=True, ssl_context='adhoc')
     except KeyboardInterrupt:
         GPIO.cleanup()
