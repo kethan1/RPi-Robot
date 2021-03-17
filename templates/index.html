@@ -67,10 +67,36 @@
             );
         }, false);
         window.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
-        setTimout(function() {
+        setInterval(function() {
+            document.getElementById("showDivX").innerHTML=joy.GetX(); 
+            document.getElementById("showDivY").innerHTML=joy.GetY(); 
+            document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
+            if (joy.GetX() !== "0" && joy.GetY() !== "0") {
+                angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
+                fetch("/move_robot", {
+                    method: "POST", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)
+                    })
+                });
+            } else {
+                if (angle !== "still") {
+                    angle = "still"
+                    fetch("/move_robot", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({angle: "still"})
+                    });
+                }
+            }
             console.log(gamepads[0].axes[0], gamepads[0].axes[1])
             console.log(gamepads[0].axes[0]*180, gamepads[0].axes[1]*180)
-        }, 50)
+        }, 50);
     </script>
   </body>
 </html>
