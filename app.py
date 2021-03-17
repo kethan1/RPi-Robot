@@ -61,7 +61,11 @@ def move_robot():
     if request.json["angle"] != "still":
         angle = request.json["angle"]
         print(angle)
-        thrust = throttle_angle_to_thrust(((angle - 180) % 360) + 180)
+        if ((angle - 180) % 360) + 180 <= 270:
+            angle_adjusted = (((angle - 180) % 360) + 180)+90
+        else:
+            angle_adjusted = (((angle - 180) % 360) + 180)-90
+        thrust = throttle_angle_to_thrust(angle_adjusted)
         if thrust[0] < 0:
             left_backward.start(abs(thrust[0]))
         else:
