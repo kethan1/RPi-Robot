@@ -75,6 +75,31 @@
             if (navigator.getGamepads()[0] != null) {
                 console.log(navigator.getGamepads()[0].axes[0], navigator.getGamepads()[0].axes[1])
                 console.log(navigator.getGamepads()[0].axes[0]*180, navigator.getGamepads()[0].axes[1]*180)
+                var x_axis = navigator.getGamepads()[0].axes[0]*180 ? (Math.abs(navigator.getGamepads()[0].axes[0]*180)>5): 0
+                var y_axis = navigator.getGamepads()[0].axes[1]*180 ? (Math.abs(navigator.getGamepads()[0].axes[1]*180)>5): 0
+                if (x_axis !== 0 && y_axis !== 0) {
+                    angle = Math.atan2(y_axis, x_axis)
+                    fetch("/move_robot", {
+                        method: "POST", 
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            angle: angle
+                        })
+                    });
+                } else {
+                    if (angle !== "still") {
+                        angle = "still"
+                        fetch("/move_robot", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({angle: "still"})
+                        });
+                    }
+                }
             }
             
         }, 50);
