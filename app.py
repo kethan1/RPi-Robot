@@ -17,7 +17,7 @@ right_backward = GPIO.PWM(26, 50)
 left_backward = GPIO.PWM(19, 50)
 left_forward = GPIO.PWM(13, 50)
 
-speed=50
+speed=100
 
 motors = [right_forward, right_backward, left_backward, left_forward]
 for motor in motors: motor.stop()
@@ -60,7 +60,6 @@ def move_robot():
     print(request.json)
     if request.json["angle"] != "still":
         angle = request.json["angle"]
-        print(angle)
         if ((angle - 180) % 360) + 180 <= 270:
             angle_adjusted = (((angle - 180) % 360) + 180)+90
         else:

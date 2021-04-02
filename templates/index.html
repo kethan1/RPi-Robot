@@ -71,36 +71,7 @@
                         body: JSON.stringify({angle: "still"})
                     });
                 }
-            }
-            if (navigator.getGamepads()[0] != null) {
-                var x_axis = Math.abs(navigator.getGamepads()[0].axes[0]*180)>10 ? navigator.getGamepads()[0].axes[0]*180: 0
-                var y_axis = (Math.abs(navigator.getGamepads()[0].axes[1]*180)>10) ? navigator.getGamepads()[0].axes[1]*180: 0
-                console.log(x_axis, y_axis)
-                if (x_axis !== 0 && y_axis !== 0) {
-                    angle = Math.atan2(y_axis, x_axis)
-                    fetch("/move_robot", {
-                        method: "POST", 
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            angle: angle
-                        })
-                    });
-                } else {
-                    if (angle !== "still") {
-                        angle = "still"
-                        fetch("/move_robot", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({angle: "still"})
-                        });
-                    }
-                }
-            }
-            
+            }           
         }, 50);
     </script>
   </body>
