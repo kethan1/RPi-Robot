@@ -57,7 +57,6 @@ def video_feed():
 
 @app.route('/move_robot', methods=["POST"])
 def move_robot():
-    print(request.json)
     if request.json["angle"] != "still":
         angle = request.json["angle"]
         if ((angle - 180) % 360) + 180 <= 270:

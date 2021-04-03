@@ -33,18 +33,30 @@
         setInterval(function() {
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
+                fetch("/move_robot", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        angle: angle
+                    })
+                });  
             } else {
-                if (angle !== "still") angle = "still"
-            }   
-            fetch("/move_robot", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    angle: angle
-                })
-            });        
+                if (angle !== "still") {
+                    angle = "still"
+                    fetch("/move_robot", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            angle: angle
+                        })
+                    }); 
+                }
+                     
+            }         
         }, 50);
     </script>
   </body>
