@@ -272,6 +272,17 @@
      {
          return canvas.height;
      };
+
+     this.ResetJoy = function () {
+        movedX=centerX; 
+        movedY=centerY; 
+        // Delete canvas 
+        context.clearRect(0, 0, canvas.width, canvas.height); 
+        // Redraw object 
+        drawExternal(); 
+        drawInternal(); 
+        canvas.unbind('mousemove'); 
+    };
      
      /**
       * @desc The X position of the cursor relative to the canvas that contains it and to its dimensions

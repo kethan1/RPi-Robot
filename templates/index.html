@@ -1,12 +1,17 @@
 <html>
   <head>
     <title>RPi Robot</title>
-    <script src="static/joy.min.js"></script>
+    <script src="static/joy.js"></script>
+     <!-- Compiled and minified CSS -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+     <!-- Compiled and minified JavaScript -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+     <link rel="icon" type="image/png" href="/static/favicon.png"/>
   </head>
   <body>
     <h1>Raspberry Pi Robot!</h1>
     <h3>Controls</h3>
-    <div id="joyDiv" style="width:200px; height:200px; margin-bottom:20px;"></div>
+    <div id="joyDiv" style="width: 200px; height: 200px; margin-bottom: 20px;"></div>
     <p id="showDivX"></p>
     <p id="showDivY"></p>
     <p id="angleOfJoystick"></p>
@@ -16,52 +21,10 @@
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv');
         angle = null;
-        // setInterval(function() {
-        //     document.getElementById("showDivX").innerHTML=joy.GetX(); 
-        //     document.getElementById("showDivY").innerHTML=joy.GetY(); 
-        //     document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
-        //     if (joy.GetX() !== "0" && joy.GetY() !== "0") {
-        //         angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
-        //         fetch("/move_robot", {
-        //             method: "POST", 
-        //             headers: {
-        //                 "Content-Type": "application/json"
-        //             },
-        //             body: JSON.stringify({
-        //                 angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)
-        //             })
-        //         });
-        //     } else {
-        //         if (angle !== "still") {
-        //             angle = "still"
-        //             fetch("/move_robot", {
-        //                 method: "POST",
-        //                 headers: {
-        //                     "Content-Type": "application/json"
-        //                 },
-        //                 body: JSON.stringify({angle: "still"})
-        //             });
-        //         }
-        //     }
-        // }, 50);
 
-        this.ResetJoy = function () {
-            movedX=centerX; 
-            movedY=centerY; 
-            // Delete canvas 
-            context.clearRect(0, 0, canvas.width, canvas.height); 
-            // Redraw object 
-            drawExternal(); 
-            drawInternal(); 
-            canvas.unbind('mousemove'); 
-        };
-
-        document.body.addEventListener("mouseup", this.ResetJoy, false);
+        document.onmouseup = this.ResetJoy
         
         setInterval(function() {
-            document.getElementById("showDivX").innerHTML=joy.GetX(); 
-            document.getElementById("showDivY").innerHTML=joy.GetY(); 
-            document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
                 fetch("/move_robot", {
