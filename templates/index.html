@@ -2,11 +2,12 @@
   <head>
     <title>RPi Robot</title>
     <script src="static/joy.js"></script>
-     <!-- Compiled and minified CSS -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-     <!-- Compiled and minified JavaScript -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
-     <link rel="icon" type="image/png" href="/static/favicon.png"/>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+    <link rel="icon" type="image/png" href="/static/favicon.png"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
   </head>
   <body>
     <h2 style="text-align: center">Raspberry Pi Robot</h2>
@@ -30,6 +31,11 @@
             Joystick.ResetJoy()
         }
         
+        var socket = io();
+        socket.on('connect', function() {
+            socket.emit('my event', {data: 'I\'m connected!'});
+        });
+
         setInterval(function() {
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);

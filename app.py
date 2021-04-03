@@ -7,6 +7,7 @@ import os
 from camera_pi import Camera
 
 app = Flask(__name__)
+app.secret_key = "!thisisasupersecretkey!"
 
 GPIO.setmode(GPIO.BCM)
 pinlist = [26, 19, 13, 6]

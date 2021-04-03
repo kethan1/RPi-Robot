@@ -7,13 +7,12 @@ from base_camera import BaseCamera
 class Camera(BaseCamera):
     @staticmethod
     def frames():
-        with picamera.PiCamera(framerate=24, resolution=(900, 640)) as camera:
+        with picamera.PiCamera(resolution=(900, 640)) as camera:
             # let camera warm up
             time.sleep(2)
 
             stream = io.BytesIO()
-            for _ in camera.capture_continuous(stream, 'jpeg',
-                                                 use_video_port=True):
+            for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
                 # return current frame
                 stream.seek(0)
                 yield stream.read()
@@ -21,3 +20,4 @@ class Camera(BaseCamera):
                 # reset stream for next frame
                 stream.seek(0)
                 stream.truncate()
+                time.sleep(0.05)
