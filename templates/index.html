@@ -9,45 +9,42 @@
      <link rel="icon" type="image/png" href="/static/favicon.png"/>
   </head>
   <body>
-    <h1>Raspberry Pi Robot!</h1>
-    <h3>Controls</h3>
-    <div id="joyDiv" style="width: 200px; height: 200px; margin-bottom: 20px;"></div>
-    <p id="showDivX"></p>
-    <p id="showDivY"></p>
-    <p id="angleOfJoystick"></p>
-    <h3>Video Stream</h3>
-    <img src="{{ url_for('video_feed') }}">
+    <h2>Raspberry Pi Robot</h2>
+    <div class="row">
+        <div class="col s4">
+            <h4>Controls</h4>
+            <div id="joyDiv" style="width: 200px; height: 200px; margin-bottom: 20px;"></div>
+        </div>
+        <div class="col s8">
+            <h4>Video Stream</h4>
+            <img src="{{ url_for('video_feed') }}">
+        </div>
+    </div>
     <script>
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv');
         angle = null;
 
-        document.onmouseup = this.ResetJoy
+        document.body.onmouseup = function() {
+            console.log(1)
+            Joystick.ResetJoy()
+        }
         
         setInterval(function() {
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
                 angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
-                fetch("/move_robot", {
-                    method: "POST", 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)
-                    })
-                });
             } else {
-                if (angle !== "still") {
-                    angle = "still"
-                    fetch("/move_robot", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({angle: "still"})
-                    });
-                }
-            }           
+                if (angle !== "still") angle = "still"
+            }   
+            fetch("/move_robot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    angle: angle
+                })
+            });        
         }, 50);
     </script>
   </body>
