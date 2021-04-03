@@ -16,34 +16,47 @@
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv');
         angle = null;
-        setInterval(function() {
-            document.getElementById("showDivX").innerHTML=joy.GetX(); 
-            document.getElementById("showDivY").innerHTML=joy.GetY(); 
-            document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
-            if (joy.GetX() !== "0" && joy.GetY() !== "0") {
-                angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
-                fetch("/move_robot", {
-                    method: "POST", 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)
-                    })
-                });
-            } else {
-                if (angle !== "still") {
-                    angle = "still"
-                    fetch("/move_robot", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({angle: "still"})
-                    });
-                }
-            }
-        }, 50);
+        // setInterval(function() {
+        //     document.getElementById("showDivX").innerHTML=joy.GetX(); 
+        //     document.getElementById("showDivY").innerHTML=joy.GetY(); 
+        //     document.getElementById("angleOfJoystick").innerHTML = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
+        //     if (joy.GetX() !== "0" && joy.GetY() !== "0") {
+        //         angle = Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI);
+        //         fetch("/move_robot", {
+        //             method: "POST", 
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             },
+        //             body: JSON.stringify({
+        //                 angle: Math.round(Math.atan2(joy.GetY(), joy.GetX()) * 180 / Math.PI)
+        //             })
+        //         });
+        //     } else {
+        //         if (angle !== "still") {
+        //             angle = "still"
+        //             fetch("/move_robot", {
+        //                 method: "POST",
+        //                 headers: {
+        //                     "Content-Type": "application/json"
+        //                 },
+        //                 body: JSON.stringify({angle: "still"})
+        //             });
+        //         }
+        //     }
+        // }, 50);
+
+        this.ResetJoy = function () {
+            movedX=centerX; 
+            movedY=centerY; 
+            // Delete canvas 
+            context.clearRect(0, 0, canvas.width, canvas.height); 
+            // Redraw object 
+            drawExternal(); 
+            drawInternal(); 
+            canvas.unbind('mousemove'); 
+        };
+
+        document.body.addEventListener("mouseup", this.ResetJoy, false);
         
         setInterval(function() {
             document.getElementById("showDivX").innerHTML=joy.GetX(); 
