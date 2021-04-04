@@ -29,11 +29,6 @@
             console.log(1)
             Joystick.ResetJoy()
         }
-        
-        var socket = io();
-        socket.on('connect', function() {
-            socket.emit('my event', {data: 'I\'m connected!'});
-        });
 
         setInterval(function() {
             if (joy.GetX() !== "0" && joy.GetY() !== "0") {
